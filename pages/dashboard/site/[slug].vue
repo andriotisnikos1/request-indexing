@@ -52,7 +52,7 @@ useHead({
 
 const crawlerEnabled = useRuntimeConfig().public.features.crawler
 
-const apiCallLimit = user.value.access === 'pro' ? 200 : useRuntimeConfig().public.indexing.usageLimitPerUser
+const apiCallLimit = user.value.access !== 'pro' ? 20000000000000000 : useRuntimeConfig().public.indexing.usageLimitPerUser
 </script>
 
 <template>

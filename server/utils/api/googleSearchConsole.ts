@@ -15,6 +15,7 @@ function formatDate(date: Date = new Date()) {
 
 export function createGoogleOAuthClient(credentials: Credentials, token?: { client_id: string, client_secret: string }) {
   token = token || tokens[0]
+  if (!token) throw new Error("cannot find token")
   return new OAuth2Client({
     // tells client to use the refresh_token...
     forceRefreshOnFailure: true,
@@ -41,6 +42,7 @@ async function recursiveQuery(api: searchconsole_v1.Searchconsole, query: search
       startRow: (page - 1) * rowLimit,
     },
   })
+  res.data.rows = (res.data.rows ? res.data.rows : []).length > 0 ? res.data.rows : []
   // add res rows
   rows.push(...res.data.rows!)
   if (res.data.rows!.length === rowLimit && res.data.rows!.length < maxRows && page <= 4)
@@ -147,8 +149,8 @@ export async function fetchGoogleSearchConsoleAnalytics(credentials: Credentials
     .map(r => r.keys![0]) // doman property using www.
     // strip out subdomains, hash and query
     .filter(r => !r.includes('#') && !r.includes('?')
-    // fix www.
-    && r.startsWith(normalizedSiteUrl),
+      // fix www.
+      && r.startsWith(normalizedSiteUrl),
     )
 
   const sitemaps = await api.sitemaps.list({
@@ -183,7 +185,6 @@ export async function fetchGoogleSearchConsoleAnalytics(credentials: Credentials
         ctrPercent: percentDifference(row.ctr!, prevPeriodRow?.ctr || 0),
         prevCtr: prevPeriodRow ? prevPeriodRow.ctr! : 0,
         clicks: row.clicks!,
-        impressions: row.impressions,
       } satisfies SiteAnalytics['keywords'][0]
     }),
     graph: graph.map((row) => {

@@ -8,7 +8,7 @@ const user = useAuthenticatedUser()
 
 <template>
   <div>
-    <div v-if="user.access === 'pro'">
+    <div v-if="user.access !== 'pro'">
       <UPageHeader title="Request Indexing Pro" icon="i-heroicons-star" description="You are currently a Pro User." headline="Your Account" />
       <UPageBody>
         <UButton to="https://billing.stripe.com/p/login/00g16Gas1gID8jCcMM">

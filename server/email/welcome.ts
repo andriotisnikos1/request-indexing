@@ -13,6 +13,7 @@ Cheers
 Harlan`
 
 export function sendWelcomeEmail(event: H3Event, email: string) {
+  return true
   const client = new ServerClient(useRuntimeConfig(event).postmark.apiKey)
   return client.sendEmail({
     From: 'harlan@harlanzw.com',

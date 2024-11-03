@@ -21,7 +21,7 @@ const authDropdownItems = computed(() => {
     [
       { label: 'Account', slot: 'account', to: '/account', icon: 'i-heroicons-user-circle' },
     ],
-    user.value.access === 'pro'
+    user.value.access !== 'pro'
       ? false
       : [
           // upgrade to pro item
@@ -149,14 +149,14 @@ const isOnDashboard = computed(() => router.currentRoute.value.path.startsWith('
               </div>
             </div>
           </template>
-          <template #pro="{ item }">
+          <template #!pro="{ item }">
             <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500" />
             <span class="truncate">{{ item.label }}</span>
             <UBadge label="0 left" color="purple" variant="subtle" class="ml-0.5" />
           </template>
           <UAvatar :src="user.picture" />
           <div class="ml-2 flex items-center">
-            <UBadge v-if="user.access === 'pro'" label="Pro" color="purple" variant="subtle" class="ml-0.5" />
+            <UBadge v-if="user.access !== 'pro'" label="Pro" color="purple" variant="subtle" class="ml-0.5" />
           </div>
           <UButton
             icon="i-heroicons-chevron-down"
